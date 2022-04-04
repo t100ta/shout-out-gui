@@ -1,8 +1,8 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/settings">About</router-link> |
-    <router-link to="comment">Create Comment</router-link>
+    <router-link to="/settings">botの設定</router-link> |
+    <router-link to="comment">コメントの設定</router-link>
   </nav>
   <router-view />
 </template>
@@ -24,7 +24,7 @@ nav {
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #9147ff;
     }
   }
 }
