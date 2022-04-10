@@ -8,24 +8,42 @@
 </template>
 
 <style lang="scss">
+body {
+  background: #030030;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #5994ce;
 }
 
 nav {
   padding: 30px;
 
   a {
+    text-decoration: none;
     font-weight: bold;
-    color: #2c3e50;
+    color: #feffef;
 
     &.router-link-exact-active {
-      color: #9147ff;
+      color: #5994ce;
     }
   }
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  background: #feffef;
+  color: #003003;
+}
+p {
+  color: #feffef;
+  font-size: 1.5rem;
+  min-height: 1.5rem;
 }
 </style>

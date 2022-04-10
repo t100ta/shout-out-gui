@@ -1,14 +1,22 @@
 <template>
   <div class="comment-creater">
-    <span>見え方</span>
+    <span>見え方(スタンプは反映されません)</span>
     <p>{{ replaceUserInfoParam }}</p>
     <div class="button-box">
-      <button v-on:click="concatUtil('$displayname')">表示名</button>
-      <button v-on:click="concatUtil('$loginname')">ID</button>
-      <button v-on:click="concatUtil('$category')">カテゴリ</button>
-      <button v-on:click="concatUtil('$title')">タイトル</button>
+      <button v-on:click="concatUtil('$displayname')" class="option-button">
+        表示名
+      </button>
+      <button v-on:click="concatUtil('$loginname')" class="option-button">
+        ID
+      </button>
+      <button v-on:click="concatUtil('$category')" class="option-button">
+        カテゴリ
+      </button>
+      <button v-on:click="concatUtil('$title')" class="option-button">
+        タイトル
+      </button>
     </div>
-    <input v-model="comment" placeholder="ここに書く" />
+    <textarea v-model="comment" placeholder="" />
     <button>テンプレを保存する</button>
   </div>
 </template>
@@ -42,18 +50,24 @@ export default class CommentCreatorView extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.button-box {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: space-around;
+.comment-creater {
   width: 80%;
-
-  button {
+  display: inline-flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  P {
+    width: 33rem;
+    overflow-wrap: break-word;
+    min-height: 1.5rem;
+  }
+  .option-button {
     width: 5rem;
   }
-}
-
-input {
-  width: 80%;
+  textarea {
+    width: 23rem;
+    height: 3rem;
+  }
 }
 </style>
