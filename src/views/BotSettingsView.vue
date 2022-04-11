@@ -45,13 +45,14 @@
     <input v-model="pingCommand" placeholder="!sobot" />
     <p>{{ pingCommand }}</p>
 
-    <button>設定を保存する</button>
+    <button v-on:click="save()">設定を保存する</button>
   </div>
 </template>
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import OpenOutline from "@/assets/openOutline.vue";
-import { Store, useStore } from "vuex";
+import { Store } from "vuex";
+import { SettingsState } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -65,15 +66,28 @@ export default class BotSettingsView extends Vue {
   channelID = "";
   pingCommand = "";
 
-  mounted() {
-    const store: Store<any> = useStore();
-    const state: any = store.state;
+  save() {
+    const store: Store<SettingsState> = this.$store;
+    const payload = {
+      OAUTH_TOKEN: this.oauthToken,
+      CLIENT_ID: this.clientId,
+      BOT_USERNAME: this.botUsername,
+      CHANNEL_NAME: this.channelID,
+      PING_COMMAND: this.pingCommand,
+    };
+    store.commit("saveSettings", payload);
+    alert("設定を保存しました！");
+  }
 
-    this.oauthToken = state?.OAUTH_TOKEN;
-    this.clientId = state?.CLIENT_ID;
-    this.botUsername = state?.BOT_USERNAME;
-    this.channelID = state?.CHANNEL_NAME;
-    this.pingCommand = state?.PING_COMMAND;
+  mounted() {
+    const store: Store<SettingsState> = this.$store;
+    const state: SettingsState = store.state;
+
+    this.oauthToken = state.BOT_SETTINGS.OAUTH_TOKEN;
+    this.clientId = state.BOT_SETTINGS.CLIENT_ID;
+    this.botUsername = state.BOT_SETTINGS.BOT_USERNAME;
+    this.channelID = state.BOT_SETTINGS.CHANNEL_NAME;
+    this.pingCommand = state.BOT_SETTINGS.PING_COMMAND;
   }
 }
 </script>

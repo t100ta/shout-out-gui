@@ -17,11 +17,13 @@
       </button>
     </div>
     <textarea v-model="comment" placeholder="" />
-    <button>テンプレを保存する</button>
+    <button v-on:click="save()">テンプレを保存する</button>
   </div>
 </template>
 <script lang="ts">
+import { SettingsState } from "@vue/runtime-core";
 import { Vue } from "vue-class-component";
+import { Store, useStore } from "vuex";
 
 export default class CommentCreatorView extends Vue {
   comment = "";
@@ -47,6 +49,18 @@ export default class CommentCreatorView extends Vue {
   concatUtil(value: string) {
     this.comment += `${value}`;
   }
+
+  save() {
+    const payload = {
+      SO_COMMENT: this.comment,
+    };
+    this.$store.commit("saveSOComment", payload);
+    alert("コメントのテンプレを保存しました！");
+  }
+
+  mounted() {
+    this.comment = this.$store.state.SO_COMMENT;
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -61,6 +75,8 @@ export default class CommentCreatorView extends Vue {
     width: 33rem;
     overflow-wrap: break-word;
     min-height: 1.5rem;
+  }
+  .button-box {
   }
   .option-button {
     width: 5rem;
