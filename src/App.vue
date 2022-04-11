@@ -41,6 +41,12 @@ textarea {
   background: #feffef;
   color: #003003;
 }
+button {
+  border-radius: 1rem;
+  background: #bbbbbb;
+  height: 2rem;
+  margin: 0.5rem 0.25rem;
+}
 p {
   color: #feffef;
   font-size: 1.5rem;
