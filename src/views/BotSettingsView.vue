@@ -95,11 +95,7 @@ export default class BotSettingsView extends Vue {
       target.push(item.currentValue);
     }
 
-    const validationError: boolean = target.some(function (
-      element,
-      index,
-      array
-    ) {
+    const validationError: boolean = target.some(function (element) {
       return !element;
     });
 

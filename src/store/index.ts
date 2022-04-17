@@ -50,7 +50,7 @@ export default createStore({
   modules: {},
   plugins: [
     createPersistredState({
-      key: "autoShoutOUt",
+      key: "autoShoutOut",
       storage: window.localStorage,
     }),
   ],
