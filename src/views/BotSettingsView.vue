@@ -1,52 +1,28 @@
 <template>
-  <div class="bot-settings">
-    <div class="title-wrapper">
-      <span class="title">OAUTH TOKEN</span>
-      <a
-        href="https://twitchapps.com/tmi/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span>https://twitchapps.com/tmi/</span>
-        <open-outline />
-      </a>
+  <form class="bot-settings" @submit.prevent="save">
+    <div v-for="item in secretItems" :key="item.title">
+      <div class="title-wrapper">
+        <span class="title">{{ item.title }}</span>
+        <a :href="item.link" target="_blank" rel="noopener noreferrer">
+          <span>{{ item.link }}</span>
+          <open-outline />
+        </a>
+      </div>
+      <input
+        type="password"
+        v-model="item.currentValue"
+        :placeholder="item.placeholder"
+      />
     </div>
-    <input v-model="oauthToken" placeholder="oauth:..." />
-    <p>{{ oauthToken }}</p>
-    <div class="title-wrapper">
-      <span class="title">CLIENT ID</span>
-      <a
-        href="https://dev.twitch.tv/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span>https://dev.twitch.tv/</span>
-        <open-outline />
-      </a>
-    </div>
-    <input v-model="clientId" placeholder="例:5f89ffaw54jjhyam2cuzsz3zi5n9z3" />
-    <p>{{ clientId }}</p>
 
-    <div class="title-wrapper">
-      <span class="title">通知botの表示名</span>
+    <div v-for="item in items" :key="item.title">
+      <div class="title-wrapper">
+        <span class="title">{{ item.title }}</span>
+      </div>
+      <input v-model="item.currentValue" :placeholder="item.placeholder" />
     </div>
-    <input v-model="botUsername" placeholder="あなたのbot名" />
-    <p>{{ botUsername }}</p>
-
-    <div class="title-wrapper">
-      <span class="title">投稿先チャンネルのユーザーID</span>
-    </div>
-    <input v-model="channelID" placeholder="あなたのユーザーID" />
-    <p>{{ channelID }}</p>
-
-    <div class="title-wrapper">
-      <span class="title">動作確認用コマンド</span>
-    </div>
-    <input v-model="pingCommand" placeholder="!sobot" />
-    <p>{{ pingCommand }}</p>
-
-    <button v-on:click="save()">設定を保存する</button>
-  </div>
+    <button type="submit">設定を保存する</button>
+  </form>
 </template>
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
@@ -54,40 +30,102 @@ import OpenOutline from "@/assets/openOutline.vue";
 import { Store } from "vuex";
 import { SettingsState } from "@vue/runtime-core";
 
+interface item {
+  title: string;
+  placeholder: string;
+  currentValue: string;
+}
+interface SecretItem extends item {
+  link: string;
+}
+
 @Options({
   components: {
     OpenOutline,
   },
 })
 export default class BotSettingsView extends Vue {
+  store: Store<SettingsState> = this.$store;
   oauthToken = "";
   clientId = "";
   botUsername = "";
   channelID = "";
   pingCommand = "";
 
-  save() {
-    const store: Store<SettingsState> = this.$store;
+  secretItems: Array<SecretItem> = [
+    {
+      title: "OAUTH TOKEN",
+      link: "https://twitchapps.com/tmi/",
+      placeholder: "oauth:...",
+      currentValue: this.oauthToken,
+    },
+    {
+      title: "CLIENT ID",
+      link: "https://dev.twitch.tv/",
+      placeholder: "例:5f89ffaw54jjhyam2cuzsz3zi5n9z3",
+      currentValue: this.clientId,
+    },
+  ];
+  items: Array<item> = [
+    {
+      title: "通知botの表示名",
+      placeholder: "あなたのbot名",
+      currentValue: this.botUsername,
+    },
+    {
+      title: "投稿先チャンネルのユーザーID",
+      placeholder: "あなたのユーザーID",
+      currentValue: this.channelID,
+    },
+    {
+      title: "動作確認用コマンド",
+      placeholder: "例:!sobot",
+      currentValue: this.pingCommand,
+    },
+  ];
+
+  save(event: Event) {
+    event.preventDefault();
+
+    const target = [];
+    for (const item of this.secretItems) {
+      target.push(item.currentValue);
+    }
+    for (const item of this.items) {
+      target.push(item.currentValue);
+    }
+
+    const validationError: boolean = target.some(function (
+      element,
+      index,
+      array
+    ) {
+      return !element;
+    });
+
+    if (validationError) {
+      alert("入力できてない箇所があります。ご確認ください。");
+      return;
+    }
+
     const payload = {
-      OAUTH_TOKEN: this.oauthToken,
-      CLIENT_ID: this.clientId,
-      BOT_USERNAME: this.botUsername,
-      CHANNEL_NAME: this.channelID,
-      PING_COMMAND: this.pingCommand,
+      OAUTH_TOKEN: target[0],
+      CLIENT_ID: target[1],
+      BOT_USERNAME: target[2],
+      CHANNEL_NAME: target[3],
+      PING_COMMAND: target[4],
     };
-    store.commit("saveSettings", payload);
+    this.$store.commit("saveSettings", payload);
     alert("設定を保存しました！");
   }
 
   mounted() {
-    const store: Store<SettingsState> = this.$store;
-    const state: SettingsState = store.state;
-
-    this.oauthToken = state.BOT_SETTINGS.OAUTH_TOKEN;
-    this.clientId = state.BOT_SETTINGS.CLIENT_ID;
-    this.botUsername = state.BOT_SETTINGS.BOT_USERNAME;
-    this.channelID = state.BOT_SETTINGS.CHANNEL_NAME;
-    this.pingCommand = state.BOT_SETTINGS.PING_COMMAND;
+    const getters = this.$store.getters;
+    this.oauthToken = getters.getOauthToken;
+    this.clientId = getters.getClientId;
+    this.botUsername = getters.getBotUsername;
+    this.channelID = getters.getChannelName;
+    this.pingCommand = getters.getPingCommand;
   }
 }
 </script>

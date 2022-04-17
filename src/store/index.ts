@@ -1,3 +1,4 @@
+import { SettingsState } from "vue";
 import { createStore } from "vuex";
 import createPersistredState from "vuex-persistedstate";
 
@@ -12,9 +13,28 @@ export default createStore({
     },
     SO_COMMENT: "",
   },
-  getters: {},
+  getters: {
+    getOauthToken(state: SettingsState) {
+      return state.BOT_SETTINGS.OAUTH_TOKEN;
+    },
+    getClientId(state: SettingsState) {
+      return state.BOT_SETTINGS.CLIENT_ID;
+    },
+    getBotUsername(state: SettingsState) {
+      return state.BOT_SETTINGS.BOT_USERNAME;
+    },
+    getChannelName(state: SettingsState) {
+      return state.BOT_SETTINGS.CHANNEL_NAME;
+    },
+    getPingCommand(state: SettingsState) {
+      return state.BOT_SETTINGS.PING_COMMAND;
+    },
+    getSoComment(state: SettingsState) {
+      return state.SO_COMMENT;
+    },
+  },
   mutations: {
-    saveSettings(state, obj) {
+    saveSettings(state: SettingsState, obj) {
       const settings = state.BOT_SETTINGS;
       settings.OAUTH_TOKEN = obj?.OAUTH_TOKEN;
       settings.CLIENT_ID = obj?.CLIENT_ID;
