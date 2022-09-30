@@ -7,6 +7,9 @@ module.exports = defineConfig({
         win: {
           icon: "public/icon.png",
         },
+        mac: {
+          icon: "public/icon.png",
+        },
       },
     },
   },
