@@ -7,10 +7,20 @@ const config = {
   CHANNEL_NAME: "",
   PING_COMMAND: "",
   sendPingMessage(username: string) {
+    console.log(`Welcome ${username}`);
     return `Welcome ${username}`;
   },
-  sendShoutOutMessage(data: ShoutOutMessage) {
-    return `/announceblue GivePLZ Would you kindly follow ${data.displayName} over at https://www.twitch.tv/${data.name}. They were last playing ${data.game}. -"${data.title}" TakeNRG`;
+  sendShoutOutMessage(data: ShoutOutMessage, templateString: string) {
+    templateString = templateString
+      .replaceAll("$displayname", data.displayName)
+      .replaceAll("$loginname", data.name)
+      .replaceAll("$category", data.game)
+      .replaceAll("$title", data.title);
+    const template =
+      templateString ??
+      `/me ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ Thanks for the raid! ${data.displayName} さん( https://www.twitch.tv/${data.name} ). | ${data.game} -"${data.title}" ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬`;
+
+    return template;
   },
 };
 

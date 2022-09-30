@@ -18,8 +18,16 @@ import TwitchAPI from "@/modules/twitchAPI";
 
 export default class App extends Vue {
   created() {
-    const twitchAPI = new TwitchAPI();
     const state = this.$store.state;
+    config.OAUTH_TOKEN = state.BOT_SETTINGS.OAUTH_TOKEN;
+    config.CLIENT_ID = state.BOT_SETTINGS.CLIENT_ID;
+    config.BOT_USERNAME = state.BOT_SETTINGS.BOT_USERNAME;
+    config.CHANNEL_NAME = state.BOT_SETTINGS.CHANNEL_NAME;
+    config.PING_COMMAND = state.BOT_SETTINGS.CHANNEL_NAME;
+
+    const twitchAPI = new TwitchAPI(config.OAUTH_TOKEN);
+    console.log(`config.OAUTH_TOKEN: ${config.OAUTH_TOKEN}`);
+    // twitchAPI.init(config.OAUTH_TOKEN);
 
     const client: tmi.Client = new tmi.Client({
       connection: {
@@ -71,10 +79,10 @@ export default class App extends Vue {
         console.log(
           `Detected 'raided'\nchannel: ${channel}\nusername: ${username}\nviewer: ${viewer}\nloginname: ${loginname}`
         );
-        const userData: Users | null = await twitchAPI.getUsers(loginname);
-        if (!userData || !Object.keys(userData).length) {
-          return;
-        }
+        const userData: any = await twitchAPI.getUsers(loginname);
+        // if (!userData || !Object.keys(userData).length) {
+        //   return;
+        // }
         const firstUserData: User = userData.data[0];
         const channelData: Channels | null = await twitchAPI.getChannels(
           firstUserData.id
@@ -90,9 +98,15 @@ export default class App extends Vue {
           game: firstChannelData.game_name,
           title: firstChannelData.title,
         };
-        client.say(
-          firstChannelData.broadcaster_name,
-          config.sendShoutOutMessage(data)
+        await client.say(
+          channel,
+          config.sendShoutOutMessage(data, state.SO_COMMENT)
+        );
+        alert(
+          `channel:${channel}, message:${config.sendShoutOutMessage(
+            data,
+            state.SO_COMMENT
+          )}`
         );
       }
     );

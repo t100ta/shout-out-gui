@@ -59,7 +59,7 @@ export default class CommentCreatorView extends Vue {
   }
 
   mounted() {
-    this.comment = this.$store.state.SO_COMMENT;
+    this.comment = this.$store.getters.getSoComment;
   }
 }
 </script>

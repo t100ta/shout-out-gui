@@ -52,37 +52,8 @@ export default class BotSettingsView extends Vue {
   channelID = "";
   pingCommand = "";
 
-  secretItems: Array<SecretItem> = [
-    {
-      title: "OAUTH TOKEN",
-      link: "https://twitchapps.com/tmi/",
-      placeholder: "oauth:...",
-      currentValue: this.oauthToken,
-    },
-    {
-      title: "CLIENT ID",
-      link: "https://dev.twitch.tv/",
-      placeholder: "例:5f89ffaw54jjhyam2cuzsz3zi5n9z3",
-      currentValue: this.clientId,
-    },
-  ];
-  items: Array<item> = [
-    {
-      title: "通知botの表示名",
-      placeholder: "あなたのbot名",
-      currentValue: this.botUsername,
-    },
-    {
-      title: "投稿先チャンネルのユーザーID",
-      placeholder: "あなたのユーザーID",
-      currentValue: this.channelID,
-    },
-    {
-      title: "動作確認用コマンド",
-      placeholder: "例:!sobot",
-      currentValue: this.pingCommand,
-    },
-  ];
+  secretItems: Array<SecretItem> = [];
+  items: Array<item> = [];
 
   save(event: Event) {
     event.preventDefault();
@@ -122,6 +93,39 @@ export default class BotSettingsView extends Vue {
     this.botUsername = getters.getBotUsername;
     this.channelID = getters.getChannelName;
     this.pingCommand = getters.getPingCommand;
+
+    this.secretItems = [
+      {
+        title: "OAUTH TOKEN",
+        link: "https://twitchapps.com/tmi/",
+        placeholder: "oauth:...",
+        currentValue: this.oauthToken,
+      },
+      {
+        title: "CLIENT ID",
+        link: "https://dev.twitch.tv/",
+        placeholder: "例:5f89ffaw54jjhyam2cuzsz3zi5n9z3",
+        currentValue: this.clientId,
+      },
+    ];
+
+    this.items = [
+      {
+        title: "通知botの表示名",
+        placeholder: "あなたのbot名",
+        currentValue: this.botUsername,
+      },
+      {
+        title: "投稿先チャンネルのユーザーID",
+        placeholder: "あなたのユーザーID",
+        currentValue: this.channelID,
+      },
+      {
+        title: "動作確認用コマンド",
+        placeholder: "例:!sobot",
+        currentValue: this.pingCommand,
+      },
+    ];
   }
 }
 </script>
