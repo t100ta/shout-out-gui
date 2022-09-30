@@ -102,12 +102,6 @@ export default class App extends Vue {
           channel,
           config.sendShoutOutMessage(data, state.SO_COMMENT)
         );
-        alert(
-          `channel:${channel}, message:${config.sendShoutOutMessage(
-            data,
-            state.SO_COMMENT
-          )}`
-        );
       }
     );
   }
