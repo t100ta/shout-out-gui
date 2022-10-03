@@ -1,7 +1,9 @@
 <template>
   <div class="comment-creater">
     <span>見え方(スタンプは反映されません)</span>
-    <span>スラッシュから始まるコマンド(/~)は利用できません</span>
+    <span
+      >スラッシュから始まるコマンドは「/me, /announce」のみ利用できます</span
+    >
     <p>{{ replaceUserInfoParam }}</p>
     <div class="button-box">
       <button v-on:click="concatUtil('$displayname')" class="option-button">
