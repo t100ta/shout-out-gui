@@ -89,12 +89,6 @@ export default class App extends Vue {
 
         if (message === state.BOT_SETTINGS.PING_COMMAND && tags.username) {
           client.say(channel, config.sendPingMessage(tags.username));
-        } else if (message.startsWith(`${state.BOT_SETTINGS.PING_COMMAND} `)) {
-          message = message
-            .replace(`${state.BOT_SETTINGS.PING_COMMAND} `, "")
-            .trim();
-          const loginName = `{"login":"${message}" }`;
-          shoutout(channel, loginName);
         }
       }
     );

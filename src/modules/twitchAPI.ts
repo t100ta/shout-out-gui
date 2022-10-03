@@ -45,7 +45,7 @@ export default class TwitchAPI {
 
   public async getUsers(loginId: string): Promise<Users | null> {
     console.log(loginId);
-    const loginIdStr = JSON.parse(loginId).login;
+    const loginIdStr = JSON.parse(JSON.stringify(loginId)).login;
     console.log(loginIdStr);
     try {
       const response: AxiosResponse = await this.instance.get("/users", {
@@ -54,13 +54,11 @@ export default class TwitchAPI {
         },
       });
       console.log("response");
-      console.dir(response);
       const data: Users = response.data;
       return data;
     } catch (error) {
       console.error();
       console.log("getUsers: " + error);
-      console.log("getUsers");
       return null;
     }
   }
@@ -77,7 +75,6 @@ export default class TwitchAPI {
     } catch (error) {
       console.error();
       console.log("getChannels: " + error);
-      console.log("getChannels");
       return null;
     }
   }
