@@ -17,15 +17,17 @@ axios.interceptors.response.use((response) => {
 
 export default class TwitchAPI {
   private instance!: AxiosInstance;
-  constructor(OAUTH_TOKEN: string) {
-    this.init(OAUTH_TOKEN);
+  constructor() {
+    this.init();
   }
 
-  public async init(OAUTH_TOKEN: string): Promise<void> {
+  public async init(): Promise<void> {
     const res: AxiosResponse = await axios.get(
       "https://id.twitch.tv/oauth2/validate",
       {
-        headers: { Authorization: "OAuth " + OAUTH_TOKEN },
+        headers: {
+          Authorization: `OAuth ${config.getFormatedOauthToken()}`,
+        },
       }
     );
     const data: Authorization = res.data;
@@ -35,7 +37,7 @@ export default class TwitchAPI {
     this.instance = axios.create({
       baseURL: "https://api.twitch.tv/helix",
       headers: {
-        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        Authorization: `Bearer ${config.getFormatedOauthToken()}`,
         "Client-Id": clientId,
       },
     });
@@ -52,13 +54,11 @@ export default class TwitchAPI {
         },
       });
       console.log("response");
-      console.dir(response);
       const data: Users = response.data;
       return data;
     } catch (error) {
       console.error();
       console.log("getUsers: " + error);
-      console.log("getUsers");
       return null;
     }
   }
@@ -75,7 +75,6 @@ export default class TwitchAPI {
     } catch (error) {
       console.error();
       console.log("getChannels: " + error);
-      console.log("getChannels");
       return null;
     }
   }

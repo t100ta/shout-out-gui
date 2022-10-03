@@ -25,9 +25,7 @@
   </div>
 </template>
 <script lang="ts">
-import { SettingsState } from "@vue/runtime-core";
 import { Vue } from "vue-class-component";
-import { Store, useStore } from "vuex";
 
 export default class CommentCreatorView extends Vue {
   comment = "";

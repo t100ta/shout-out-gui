@@ -4,6 +4,10 @@
 ## ユーザー向け
 ### 概要
 Twitch配信において、対象のチャンネルにRaidが来た場合に自動でメッセージをチャットに投稿します。
+
+### できること
+1. 自分のチャンネルに対するRaidを自動で検知して、カスタムしたメッセージ(Raiderのユーザー名、配信カテゴリ、配信タイトルなど)を投稿できます。
+2. アプリ内で設定したコマンドを使って動作確認ができます。 例) `!sobot -> Welcome tom_t100ta`
 ### 導入手順
 0. 事前に配信アカウントではない、bot用のサブアカウントを作成し以降の手順を行うことをお勧めします。
 1. 「Release」ページからexeファイルをダウンロード・インストールしてください。
@@ -13,7 +17,7 @@ Twitch配信において、対象のチャンネルにRaidが来た場合に自�
 ### どこに書くか保留中のTIPS
 - コメントの設定例
 ```
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ Thanks for the raid! $displayname さん( https://www.twitch.tv/$loginname ). $category | $title ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 
+/announce ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ Thanks for the raid! $displayname さん( https://www.twitch.tv/$loginname ). $category | $title ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 
 ```
 ## Project setup
 ```
