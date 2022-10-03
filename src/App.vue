@@ -25,9 +25,7 @@ export default class App extends Vue {
     config.CHANNEL_NAME = state.BOT_SETTINGS.CHANNEL_NAME;
     config.PING_COMMAND = state.BOT_SETTINGS.CHANNEL_NAME;
 
-    const twitchAPI = new TwitchAPI(config.OAUTH_TOKEN);
-    console.log(`config.OAUTH_TOKEN: ${config.OAUTH_TOKEN}`);
-    // twitchAPI.init(config.OAUTH_TOKEN);
+    const twitchAPI = new TwitchAPI();
 
     const client: tmi.Client = new tmi.Client({
       connection: {
@@ -40,6 +38,33 @@ export default class App extends Vue {
       },
       channels: [state.BOT_SETTINGS.CHANNEL_NAME],
     });
+
+    const shoutout = async function (channel: string, loginName: string) {
+      const userData: Users | null = await twitchAPI.getUsers(loginName);
+      if (!userData || !Object.keys(userData).length) {
+        return;
+      }
+      const firstUserData: User = userData.data[0];
+      const channelData: Channels | null = await twitchAPI.getChannels(
+        firstUserData.id
+      );
+      if (!channelData || !Object.keys(channelData).length) {
+        return;
+      }
+      const firstChannelData: Channel = channelData.data[0];
+
+      const data: ShoutOutMessage = {
+        displayName: firstUserData.display_name,
+        name: firstUserData.login,
+        game: firstChannelData.game_name,
+        title: firstChannelData.title,
+      };
+      await client.say(
+        channel,
+        config.sendShoutOutMessage(data, state.SO_COMMENT)
+      );
+    };
+
     client.connect().catch(console.error);
 
     client.on("connected", (address: string, port: number) => {
@@ -64,6 +89,12 @@ export default class App extends Vue {
 
         if (message === state.BOT_SETTINGS.PING_COMMAND && tags.username) {
           client.say(channel, config.sendPingMessage(tags.username));
+        } else if (message.startsWith(`${state.BOT_SETTINGS.PING_COMMAND} `)) {
+          message = message
+            .replace(`${state.BOT_SETTINGS.PING_COMMAND} `, "")
+            .trim();
+          const loginName = `{"login":"${message}" }`;
+          shoutout(channel, loginName);
         }
       }
     );
@@ -79,29 +110,7 @@ export default class App extends Vue {
         console.log(
           `Detected 'raided'\nchannel: ${channel}\nusername: ${username}\nviewer: ${viewer}\nloginname: ${loginname}`
         );
-        const userData: any = await twitchAPI.getUsers(loginname);
-        // if (!userData || !Object.keys(userData).length) {
-        //   return;
-        // }
-        const firstUserData: User = userData.data[0];
-        const channelData: Channels | null = await twitchAPI.getChannels(
-          firstUserData.id
-        );
-        if (!channelData || !Object.keys(channelData).length) {
-          return;
-        }
-        const firstChannelData: Channel = channelData.data[0];
-
-        const data: ShoutOutMessage = {
-          displayName: firstUserData.display_name,
-          name: firstUserData.login,
-          game: firstChannelData.game_name,
-          title: firstChannelData.title,
-        };
-        await client.say(
-          channel,
-          config.sendShoutOutMessage(data, state.SO_COMMENT)
-        );
+        shoutout(channel, loginname);
       }
     );
   }

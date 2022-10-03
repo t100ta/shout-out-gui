@@ -17,15 +17,17 @@ axios.interceptors.response.use((response) => {
 
 export default class TwitchAPI {
   private instance!: AxiosInstance;
-  constructor(OAUTH_TOKEN: string) {
-    this.init(OAUTH_TOKEN);
+  constructor() {
+    this.init();
   }
 
-  public async init(OAUTH_TOKEN: string): Promise<void> {
+  public async init(): Promise<void> {
     const res: AxiosResponse = await axios.get(
       "https://id.twitch.tv/oauth2/validate",
       {
-        headers: { Authorization: "OAuth " + OAUTH_TOKEN },
+        headers: {
+          Authorization: `OAuth ${config.OAUTH_TOKEN}`,
+        },
       }
     );
     const data: Authorization = res.data;
@@ -35,7 +37,7 @@ export default class TwitchAPI {
     this.instance = axios.create({
       baseURL: "https://api.twitch.tv/helix",
       headers: {
-        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        Authorization: `Bearer ${config.OAUTH_TOKEN}`,
         "Client-Id": clientId,
       },
     });
@@ -43,7 +45,7 @@ export default class TwitchAPI {
 
   public async getUsers(loginId: string): Promise<Users | null> {
     console.log(loginId);
-    const loginIdStr = JSON.parse(JSON.stringify(loginId)).login;
+    const loginIdStr = JSON.parse(loginId).login;
     console.log(loginIdStr);
     try {
       const response: AxiosResponse = await this.instance.get("/users", {
