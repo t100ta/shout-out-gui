@@ -6,6 +6,9 @@ const config = {
   BOT_USERNAME: "",
   CHANNEL_NAME: "",
   PING_COMMAND: "",
+  getFormatedOauthToken() {
+    return this.OAUTH_TOKEN.replace("oauth:", "");
+  },
   sendPingMessage(username: string) {
     console.log(`Welcome ${username}`);
     return `Welcome ${username}`;
@@ -23,7 +26,5 @@ const config = {
     return template;
   },
 };
-
-config.OAUTH_TOKEN = config.OAUTH_TOKEN?.replace("oauth:", "");
 
 export default config;

@@ -98,7 +98,7 @@ export default class BotSettingsView extends Vue {
       {
         title: "OAUTH TOKEN",
         link: "https://twitchapps.com/tmi/",
-        placeholder: "「oauth:」以降の文字列",
+        placeholder: "oauth:...",
         currentValue: this.oauthToken,
       },
       {

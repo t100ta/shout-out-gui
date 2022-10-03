@@ -26,7 +26,7 @@ export default class TwitchAPI {
       "https://id.twitch.tv/oauth2/validate",
       {
         headers: {
-          Authorization: `OAuth ${config.OAUTH_TOKEN}`,
+          Authorization: `OAuth ${config.getFormatedOauthToken()}`,
         },
       }
     );
@@ -37,7 +37,7 @@ export default class TwitchAPI {
     this.instance = axios.create({
       baseURL: "https://api.twitch.tv/helix",
       headers: {
-        Authorization: `Bearer ${config.OAUTH_TOKEN}`,
+        Authorization: `Bearer ${config.getFormatedOauthToken()}`,
         "Client-Id": clientId,
       },
     });
