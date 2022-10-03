@@ -2,7 +2,8 @@
   <div class="comment-creater">
     <span>見え方(スタンプは反映されません)</span>
     <span
-      >スラッシュから始まるコマンドは「/me, /announce」のみ利用できます</span
+      >スラッシュから始まるコマンドは「/me,
+      /announce」のみ利用できます(2023/2/18で終了予定)</span
     >
     <p>{{ replaceUserInfoParam }}</p>
     <div class="button-box">
