@@ -37,6 +37,7 @@ export default class App extends Vue {
         password: state.BOT_SETTINGS.OAUTH_TOKEN,
       },
       channels: [state.BOT_SETTINGS.CHANNEL_NAME],
+      options: { skipUpdatingEmotesets: true },
     });
 
     const shoutout = async function (channel: string, loginName: string) {
